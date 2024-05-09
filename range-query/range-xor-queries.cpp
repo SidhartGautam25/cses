@@ -63,10 +63,6 @@ void solve(){
   for(int i=1;i<n;i++){
     prefix[i]=prefix[i-1]^arr[i];
   }
-//   for(int i=0;i<n;i++){
-//       cout<<prefix[i]<<"  ";
-//   }
-//   cout<<endl;
   for(int i=0;i<q;i++){
     int l,r;
     cin>>l>>r;
