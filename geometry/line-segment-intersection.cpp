@@ -26,8 +26,7 @@ void solve(){
     ll s2=direction(x1,x2,x4,y1,y2,y4);
     ll s3=direction(x3,x4,x1,y3,y4,y1);
     ll s4=direction(x3,x4,x2,y3,y4,y2);
-    // cout<<"s4 is "<<s4<<endl;
-    // cout<<"point 2 is on segment of line 2 "<<onlineSegment(x3,y3,x4,y4,x2,y2)<<endl;
+
     if((s1*s2<0) && (s3*s4<0)){
         cout<<"YES"<<endl;
         return;
