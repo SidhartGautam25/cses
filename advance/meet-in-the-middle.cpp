@@ -3,85 +3,100 @@ using namespace std;
  
 #define ll long long
 #define mod LLONG_MAX
- 
- 
- 
-ll power(ll x, ll y)
-{
-    ll temp;
-    if (y == 0){
-        ll ans=1;
-        return ans;
- 
-    }
-       
-    temp = power(x, y / 2);
-    if (y % 2 == 0)
-        return ((temp%mod) * (temp%mod))%mod;
-    else{
-        ll p1=((x%mod)*(temp%mod))%mod;
-        ll p2=((p1%mod)*(temp%mod))%mod;
-        return p2;
-    }
-        
-}
- 
- 
- 
- 
-void dfs1(vector<vector<int>>&tree,int curr,int p,vector<int>&dp){
-    dp[curr]=0;
-    int mmax=0;
-    for(int i=0;i<tree[curr].size();i++){
-        int child=tree[curr][i];
-        if(child != p){
-            dfs1(tree,child,curr,dp);
-            mmax=max(mmax,dp[child]+1);
-        }
-    }
-    dp[curr]=mmax;
-}
 
-void dfs(vector<vector<int>>&tree,int curr,int p,vector<int>&in,vector<int>&out){
-    int max_dis_1=-1;
-    int max_dis_2=-1;
-    for(int i=0;i<tree[curr].size();i++){
-        int child=tree[curr][i];
-        if(child != p){
-            if(max_dis_1<in[child]){
-                max_dis_2=max_dis_1;
-                max_dis_1=in[child];
-            }else if(max_dis_2<in[child]){
-                max_dis_2=in[child];
-            }
 
-        }
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
     }
 
-    for(int i=0;i<tree[curr].size();i++){
-        int child=tree[curr][i];
-        if(child != p){
-            int max_dis=max_dis_1;
-            if(max_dis==in[child]){
-                max_dis=max_dis_2;
-            }
-            out[child]=1+max(out[curr],1+max_dis);
-            dfs(tree,child,curr,in,out);
-        }
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
     }
-}
+};
+unordered_map<ll,ll, custom_hash> mp_left;
+
+
  
  
 void solve(){
-   int n,x;
-   cin>>n>>x;
-   vector<int>arr(n);
-   for(int i=0;i<n;i++){
-     cin>>arr[i];
-   }
-   vector<vector<int>>dp(n+1,vector<int>(x+1));
-   
+    //this is dp solution
+    // got runtime error because value of sum is too large to handle the size 
+    // of the array
 
+    // ll n,sum;
+    // cin>>n>>sum;
+    // vector<ll>arr(n);
+    // for(ll i=0;i<n;i++){
+    //     cin>>arr[i];
+    // }
+    // vector<vector<ll>>dp(sum+1,vector<ll>(n+1,0));
+    // for(ll i=0;i<=n;i++){
+    //     dp[0][i]=1;
+    // }
+    // for(ll s=1;s<=sum;s++){
+    //     for(ll size=1;size<=n;size++){
+    //         if(s-arr[size-1]>=0){
+    //             dp[s][size]=dp[s-arr[size-1]][size-1];
+    //         }
+    //         dp[s][size]=dp[s][size]+dp[s][size-1];
+    //     }
+    // }
+    // cout<<dp[sum][n]<<endl;
+
+
+    // Meet in the middle technique
+    ll n,sum;
+    cin>>n>>sum;
+    ll s1=n/2;
+    ll s2=n-s1;
+    vector<ll>left(s1);
+    vector<ll>right(s2);
+
+    for(ll i=0;i<n;i++){
+        ll temp;
+        cin>>temp;
+        if(i<n/2){
+            left[i]=temp;
+        }else{
+            right[i-s1]=temp;
+        }
+    }
+
+    //unordered_map<ll,ll>mp_left;
+    
+    ll num=1<<s1;
+    for(ll i=0;i<num;i++){
+        ll s=0;
+        for(ll j=0;j<min(i,s1);j++){
+            if(i&(1<<j)){
+                s=s+left[j];
+            }
+        }
+        mp_left[s]++;
+    }
+
+    num=1<<s2;
+    ll ans=0;
+    for(ll i=0;i<num;i++){
+        ll s=0;
+        for(ll j=0;j<min(i,s2);j++){
+            if(i&(1<<j)){
+                s=s+right[j];
+            }
+        }
+        if (mp_left.count(sum-s)) ans += mp_left[sum-s];
+    }
+
+   cout<<ans<<endl;
+
+
+   
 }
  
 int main() {
