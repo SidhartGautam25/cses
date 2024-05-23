@@ -49,8 +49,14 @@ void cd(int u) {
 
     // get the centroid
     int c = FIND_CENTROID(u, -1, s[u]/2);
+    // this array is just setting for indices which are previosly calculated
+    // as centroid 
     v[c] = true;
+
+    // this array is just storing the count of nodes at depth d for given centroid
     countArr[0] = 1;
+
+    // this is just for erasing the countArr 
     m = 0;
     for(int x: a[c]) {
         if(!v[x]) {
@@ -62,8 +68,11 @@ void cd(int u) {
             dfs(x, c, 1, false);
         }
     }
+
+    // just erasing the values from countArr
     fill(countArr, countArr+m+10, 0);
     for(int x: a[c]) {
+        //now go to neighbour of current centroid 
         if(!v[x]) {
             cd(x);
         }
