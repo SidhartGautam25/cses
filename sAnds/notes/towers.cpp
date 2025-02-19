@@ -1,0 +1,12 @@
+/*
+
+is question me binary search ko aise case me use krna sikha jaha 
+hmko aise number ka index chahie jo current element se just bda ho
+
+
+
+
+
+
+
+*/
