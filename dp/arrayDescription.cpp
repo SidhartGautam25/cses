@@ -51,14 +51,50 @@ void solutionOne(){
 
 
 void solutionTwo(){
-    
+      int n, m;
+    cin >> n >> m;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    vector<int> prev(m + 1, 0), curr(m + 1, 0);
+
+    if (arr[0] == 0) {
+        for (int x = 1; x <= m; x++) prev[x] = 1;
+    } else {
+        prev[arr[0]] = 1;
+    }
+
+    for (int i = 1; i < n; i++) {
+        fill(curr.begin(), curr.end(), 0);
+        if (arr[i] == 0) {
+            for (int x = 1; x <= m; x++) {
+                curr[x] = prev[x];
+                if (x > 1) curr[x] = (curr[x] + prev[x - 1]) % MOD;
+                if (x < m) curr[x] = (curr[x] + prev[x + 1]) % MOD;
+            }
+        } else {
+            int x = arr[i];
+            curr[x] = prev[x];
+            if (x > 1) curr[x] = (curr[x] + prev[x - 1]) % MOD;
+            if (x < m) curr[x] = (curr[x] + prev[x + 1]) % MOD;
+        }
+        swap(prev, curr);
+    }
+
+    int result = 0;
+    for (int x = 1; x <= m; x++) {
+        result = (result + prev[x]) % MOD;
+    }
+
+    cout << result << endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-    solutionOne();
+    solutionTwo();
 
     return 0;
 }
