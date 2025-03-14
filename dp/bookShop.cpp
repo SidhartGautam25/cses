@@ -30,7 +30,7 @@ void solutionOne() {
 
 // using 2D dp array
 void solutionTwo(){
-     int n,x;
+    int n,x;
     cin>>n>>x;
     vector<int>books(n);
     for(int i=0;i<n;i++){
