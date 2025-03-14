@@ -49,7 +49,7 @@ void solutionOne(){
 
 }
 
-
+// reduces space complexity
 void solutionTwo(){
       int n, m;
     cin >> n >> m;
