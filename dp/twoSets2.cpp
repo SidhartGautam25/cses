@@ -62,9 +62,50 @@ void solutionOne(){
 }
 
 
-
+// using 1D array
 void solutionTwo(){
-    
+     ll n;
+    cin >> n;
+
+    ll sum = n * (n + 1) / 2;  // Sum of first n natural numbers
+
+    if (sum % 2 == 1) {
+        cout << "0" << endl;
+        return;
+    }
+
+    ll target = sum / 2;
+    vector<ll> dp(target + 1, 0);
+    dp[0] = 1;
+
+    for (ll i = 1; i <= n; i++) {
+
+        // very important to understand why we are moving in reverse order
+        // hmlogo ka logic ye hai ki hr ek element ko utha kr ye decide 
+        // kr rhe ki usse koi target(i) kitne trike se bnaya ja sakta hai
+        // to maan lete hai 1,2....5 tk element ko hmlog consider kr lie hai
+        // or ab hmlog 6 ki madad se let's say 10 ko bnana chahte hai
+        // iska mtlb dp[10] ko bnana hai
+        // to agr socha jae to dp[10] ko 6 tk number se banane ka total trika
+        // utna hoga jitna abhi tk mtlb dp[10] abhi tk 5 tk ke lie to store 
+        // kia hi hua hai ki kitne trike se bna sakte hai
+        // to dp[10]=dp[10]+5 tk ko consider krke dp[4] (mtlb 4 kitna trike se bnaya
+        // ja sakta hai 5 tk ke number ke help se )
+        // ab agr order reverse nhi rahta to hmlog dp[10] ke pahle dp[4] ko solve
+        // kr rhe hote iska mtlb hr element ke lie hmlog pahle dp[4] ko solve krte 
+        // tb dp[10] me aate lekin dp[10] ko 6 ka consider krke solve krne ke lie 
+        // dp[4] me 5 ko hi consider krke bnane itna trika ka number store hona chahie
+        // islie hmlog pahle dp[10] ko solve kr rhe kisi ek element ke lie taaki uske 
+        // pahle wale number ke dp me dp[4] tk hi answer rhe 
+        
+        for (ll j = target; j >= i; j--) {  // Iterate in reverse order
+            dp[j] = (dp[j] + dp[j - i]) % mod;
+        }
+    }
+
+    // Divide result by 2 using modular inverse
+    cout << (dp[target] * mod_inv(2, mod)) % mod << endl;
+
 }
 
 int main(){
