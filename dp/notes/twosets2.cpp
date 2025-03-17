@@ -1,0 +1,1 @@
+// learnt how to divide a number by 2 when modulo is involed
