@@ -33,11 +33,34 @@ void solutionOne(){
 
 }
 
+
+void solutionTwo(){
+      int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    vector<int> sub; // Stores the smallest tail values of LIS of different lengths
+
+    for (int num : arr) {
+        auto it = lower_bound(sub.begin(), sub.end(), num);
+        if (it == sub.end()) {
+            sub.push_back(num); // Extend LIS
+        } else {
+            *it = num; // Replace existing element to maintain optimal subsequence
+        }
+    }
+
+    cout << sub.size() << endl; // Length of LIS
+}
+
 int main(){
     ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-    solutionOne();
+    solutionTwo();
 
     return 0;
 }
