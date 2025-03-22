@@ -57,6 +57,7 @@ void solutionOne() {
 
 // acceptable solution
 // known as bitmask dp
+// need to solve more question on bitmask dp
 void solutionTwo(){
 
    int n,x;
@@ -95,12 +96,156 @@ void solutionTwo(){
 }
 
 
+bool canFit(int k,int x,vector<int>&w){
+    multiset<int>rides;
+    for(int i=0;i<k;i++){
+        rides.insert(x);
+    }
+
+    for(int i=0;i<w.size();i++){
+        int ww=w[i];
+        // auto it=rides.lower_bound(ww);
+        auto it = rides.upper_bound(ww - 1); // Find the tightest fitting ride
+
+        if(it==rides.end()){
+            // no space availabe
+            return false;
+        }
+
+        int remaining=*it-ww;
+        rides.erase(it);
+        rides.insert(remaining);
+    }
+
+    return true;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// First-Fit Decreasing (FFD) Heuristic + Binary Search.
+// have some issues( will figure it out)
+// using multi set 
+void solutionThree(){
+    // inspired by bin packing problems, where we try to fit items (people) into bins
+    // (elevator rides) efficiently.
+
+    int n,x;
+    cin>>n>>x;
+    vector<int>w(n);
+    for(int i=0;i<n;i++){
+        cin>>w[i];
+    }
+
+    sort(w.rbegin(),w.rend());
+    int left=1;
+    int right=n;
+    int ans=n;
+
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(canFit(mid,x,w)){
+            ans=mid;
+            right=mid-1; // try fewer rides
+        }else{
+            left=mid+1; // need more rides
+        }
+
+    }
+
+    cout << ans << endl;
+
+
+
+}
+
+
+
+
+
+
+bool greedyCanFit(int k,vector<int>&weight,int x){
+    int rides=0;
+    int left=0;
+    int n=weight.size();
+    int right=n-1;
+
+    while(left<=right){
+        if(left==right){
+            rides++;
+            break;
+        }
+        if(weight[left]+weight[right]<=x){
+            left++;
+        }
+        right--;
+        rides++;
+        if(rides>k){
+            return false;
+        }
+    }
+
+    return rides<=k;
+
+}
+
+
+
+
+// same concept of solutionThree 
+// but without using multiset
+void solutionFour(){
+
+    int n,x;
+    cin>>n>>x;
+    vector<int>weight(n);
+    for(int i=0;i<n;i++){
+        cin>>weight[i];
+    }
+
+    sort(weight.begin(),weight.end());
+
+    int left=1;
+    int right=n;
+    int ans=n;
+
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(greedyCanFit(mid,weight,x)){
+            ans=mid;
+            right=mid-1;
+        }else{
+            left=mid+1;
+        }
+    }
+
+    cout<<ans<<endl;
+
+}
+
+
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    solutionTwo();
+    solutionFour();
 
     return 0;
 }
