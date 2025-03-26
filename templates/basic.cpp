@@ -12,6 +12,16 @@ void read_iv(vector<int>&arr){
     }
 }
 
+void read_ipv(vector<pair<int,int>>& arr){
+    int n=arr.size();
+    for(int i=0;i<n;i++){
+        int x,y;
+        cin>>x>>y;
+        arr[i].first=x;
+        arr[i].second=y;
+    }
+}
+
 void print_iv(vector<int>&arr){
     int n=arr.size();
     for(int i=0;i<n;i++){
