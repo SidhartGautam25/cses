@@ -5,6 +5,26 @@ using namespace std;
 #define mod 1000000007
 
 
+void read_iv(vector<int>&arr){
+    int n=arr.size();
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+}
+
+void print_iv(vector<int>&arr){
+    int n=arr.size();
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
+
+void read_i(int& x){
+    cin>>x;
+}
+
+
 void recursiveSolve(vector<int>&coins,int curr,vector<int>&ans,map<int,int>&mp){
     if(curr==coins.size()){
         return;
@@ -97,7 +117,46 @@ void solutionTwo(){
 
 
 // dp solution
+// feasible
 void solutionThree(){
+
+    int n;
+    read_i(n);
+   
+    vector<int>coins(n);
+    read_iv(coins);
+
+    
+
+    int max_sum=1e5;
+    vector<vector<bool>>dp(n+1,vector<bool>(max_sum,false));
+
+    // dp[i][j]
+    // is it possible to make sum j with i coins
+
+    dp[0][0]=true;
+
+    for(int i=1;i<=n;i++){
+        for(int curr_sum=0;curr_sum<=max_sum;curr_sum++){
+            dp[i][curr_sum]=dp[i-1][curr_sum];
+            int prev_sum=curr_sum-coins[i-1];
+            if(prev_sum>=0){
+                dp[i][curr_sum]=dp[i][curr_sum] || dp[i-1][prev_sum];
+            }
+        }
+    }
+
+    vector<int>sums;
+    for(int curr_sum=1;curr_sum<=max_sum;curr_sum++){
+        if(dp[n][curr_sum]){
+            sums.push_back(curr_sum);
+        }
+
+    }
+
+    cout<<sums.size()<<endl;
+    print_iv(sums);
+    
 
 }
 
@@ -109,7 +168,7 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    solutionTwo();
+    solutionThree();
 
     return 0;
 }
