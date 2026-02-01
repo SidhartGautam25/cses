@@ -5,8 +5,6 @@ using namespace std;
 #define mod INT_MAX
 const int MOD = 1000000007;
 
-
-
 ll recursion_2(ll n, ll k) {
     if (n == 1) return 1;
 
@@ -33,19 +31,15 @@ ll recursion_2(ll n, ll k) {
     }
 }
 
-
-
 int recursion(int n,int k){
     if(n==1){
         return n;
     }
-
     int deletion=(n+1)/2;
     if(k<= deletion){
         if (2 * k > n) return (2 * k) % n;
         return 2 * k;
     }
-
     int rem_n=n/2;
     int rem_k=k-deletion;
     int res=recursion(rem_n,rem_k);
@@ -57,8 +51,6 @@ int recursion(int n,int k){
 }
 
 void first(){
-  
-
     int q;
     cin>>q;
     for(int i=0;i<q;i++){
@@ -66,16 +58,10 @@ void first(){
         cin>>n>>k;
         int result=recursion(n,k);
         cout<<result<<endl;
-    }
-    
+    }    
 }
-
-
-
 
 int main(){
     first();
-  
-
     return 0;
 }
